@@ -91,6 +91,23 @@ def get_accuracy(predictions, y):
     print(predictions, y)
     return np.sum(predictions == y) / y.size
 
+def make_predictions(x, w1, b1, w2, b2):
+    _, _, _, a2 = forward_propagate(w1, b1, w2, b2, x)
+    predictions = get_predictions(a2)
+    return predictions
+
+def test_predictions(index, w1, b1, w2, b2):
+    current_image = x_train[:, index, None]
+
+    prediction = make_predictions(x_train[:, index, None], w1, b1, w2, b2)
+    label = y_train[index]
+    print("Prediction: ", prediction)
+    print("Label: ", label)
+
+    current_image = current_image.reshape((28, 28)) * 255
+    plt.gray()
+    plt.imshow(current_image, interpolation='nearest')
+    plt.show()
 
 def gradient_descent(x, y, iterations, alpha):
     w1, b1, w2, b2 = init_params()
@@ -109,6 +126,9 @@ def gradient_descent(x, y, iterations, alpha):
 
 def main():
     w1, b1, w2, b2 = gradient_descent(x_train, y_train, 250, 0.20)
+    test_predictions(0 , w1, b1, w2, b2)
+
+    test_predictions(78 , w1, b1, w2, b2)
 
 
 main()
